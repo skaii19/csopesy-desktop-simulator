@@ -103,6 +103,25 @@ int main(int, char**)
 
         const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
 
+        ImDrawList* bg_draw_list = ImGui::GetBackgroundDrawList();
+
+        // Define gradient colors (IM_COL32(R, G, B, A))
+        ImU32 top_color = IM_COL32(30, 30, 60, 255); // indigo
+        ImU32 bottom_color = IM_COL32(80, 100, 150, 255); // lighter blue
+
+
+        // Draws rectangle covering the entire viewport with vertical gradient
+        bg_draw_list->AddRectFilledMultiColor(
+            main_viewport->WorkPos,
+            ImVec2(main_viewport->WorkPos.x + main_viewport->WorkSize.x,
+                main_viewport->WorkPos.y + main_viewport->WorkSize.y),
+            top_color,     // Top left
+            top_color,     // Top right
+            bottom_color,  // Bottom right
+            bottom_color   // Bottom left
+
+        
+
         // Taskbar
         {
             ImGui::SetNextWindowPos(ImVec2(main_viewport->WorkPos.x, main_viewport->WorkPos.y + main_viewport->WorkSize.y - taskbar_height), ImGuiCond_Always);
