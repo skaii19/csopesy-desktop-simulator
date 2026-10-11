@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="csopesy/csopesy.vcxproj" />
+  <Project Path="csopesy/csopesy.vcxproj" Id="43c13e54-64d4-4cf5-9619-e2a29796916a" />
 </Solution>
