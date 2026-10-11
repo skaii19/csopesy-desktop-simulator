@@ -166,9 +166,9 @@ int main(int, char**)
 
             if (ImGui::Button("App A", ImVec2(90, 34))) { show_1 = !show_1; }
             ImGui::SameLine();
-            if (ImGui::Button("App B", ImVec2(90, 34))) { show_1 = !show_1; }
+            if (ImGui::Button("App B", ImVec2(90, 34))) { show_2 = !show_2; }
             ImGui::SameLine();
-            if (ImGui::Button("TaskMgr", ImVec2(90, 34))) { show_task_manager = !show_task_manager; }
+            if (ImGui::Button("Task Manager", ImVec2(90, 34))) { show_task_manager = !show_task_manager; }
 
             ImGui::SameLine(ImGui::GetWindowContentRegionMax().x - 90.0f);
             if (ImGui::Button("Power", ImVec2(80, 34)))
@@ -185,11 +185,7 @@ int main(int, char**)
             ImGui::SetNextWindowPos(ImVec2(main_viewport->WorkPos.x + main_viewport->WorkSize.x * 0.5f - 260, main_viewport->WorkPos.y + 60), ImGuiCond_Appearing);
             if (ImGui::Begin("App A - Dashboard", &show_1))
             {
-                ImGui::TextWrapped("Mock app window A with dummy content.");
-                ImGui::Separator();
-                ImGui::BulletText("Notifications: 3");
-                ImGui::BulletText("Sync status: Connected");
-                ImGui::BulletText("Last update: Just now");
+                ImGui::Text("Hello There!");
             }
             ImGui::End();
         }
@@ -201,12 +197,7 @@ int main(int, char**)
             ImGui::SetNextWindowPos(ImVec2(main_viewport->WorkPos.x + 80, main_viewport->WorkPos.y + 80), ImGuiCond_Appearing);
             if (ImGui::Begin("App B - Info", &show_2))
             {
-                ImGui::Text("Mock app window B");
-                ImGui::Separator();
-                ImGui::Text("Placeholder details:");
-                ImGui::BulletText("Version: 1.0.0");
-                ImGui::BulletText("User: Demo");
-                ImGui::BulletText("State: Idle");
+                ImGui::Text("Hi!!");
             }
             ImGui::End();
         }
