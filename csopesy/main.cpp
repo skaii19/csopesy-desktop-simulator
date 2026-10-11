@@ -166,7 +166,7 @@ int main(int, char**)
 
             if (ImGui::Button("App A", ImVec2(90, 34))) { show_1 = !show_1; }
             ImGui::SameLine();
-            if (ImGui::Button("App B", ImVec2(90, 34))) { show_1 = !show_1; }
+            if (ImGui::Button("App B", ImVec2(90, 34))) { show_2 = !show_2; }
             ImGui::SameLine();
             if (ImGui::Button("TaskMgr", ImVec2(90, 34))) { show_task_manager = !show_task_manager; }
 
