@@ -170,7 +170,26 @@ int main(int, char**)
             ImGui::SameLine();
             if (ImGui::Button("Task Manager", ImVec2(90, 34))) { show_task_manager = !show_task_manager; }
 
-            ImGui::SameLine(ImGui::GetWindowContentRegionMax().x - 90.0f);
+
+            // Get time using <ctime> 
+            time_t rawtime;
+            struct tm timeinfo;
+            time(&rawtime);
+#if defined(_WIN32)
+            localtime_s(&timeinfo, &rawtime);
+#else
+            localtime_r(&rawtime, &timeinfo);
+#endif
+
+            char time_buffer[32];
+            std::strftime(time_buffer, sizeof(time_buffer), "%I:%M:%S %p", &timeinfo);
+
+            // show time on the right 
+            ImGui::SameLine(ImGui::GetWindowContentRegionMax().x - 260.0f);
+            ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 8.0f);
+            ImGui::Text("%s", time_buffer);
+
+            ImGui::SameLine(ImGui::GetWindowContentRegionMax().x - 80.0f);
             if (ImGui::Button("Power", ImVec2(80, 34)))
                 glfwSetWindowShouldClose(window, GLFW_TRUE);
 
