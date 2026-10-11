@@ -13,6 +13,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <sstream>
+#include <string.h>
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
@@ -46,12 +47,11 @@ int main(int, char**)
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1); // Enable vsync
 
-    // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 
     ImGui::StyleColorsDark();
 
@@ -60,19 +60,21 @@ int main(int, char**)
     style.WindowRounding = 8.0f;
     style.FrameRounding = 6.0f;
 
-    style.ScaleAllSizes(main_scale);        // Bake a fixed style scale. (until we have a solution for dynamic style scaling, changing this requires resetting Style + calling this again)
-    style.FontScaleDpi = main_scale;        // Set initial font scale. (in docking branch: using io.ConfigDpiScaleFonts=true automatically overrides this for every window depending on the current monitor)
+    style.ScaleAllSizes(main_scale);
+    style.FontScaleDpi = main_scale;
 
-    // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
     // state
     bool show_1 = false;
     bool show_2 = false;
+    bool show_message = false;
     bool show_task_manager = false;
     static ImVec4 colors = ImVec4(1.0, 0, 0, 1.0);
     float taskbar_height = 50.0f;
+    static char text[64] = "";
+    static char display[64] = "";
 
     // dummy values for task manager
     std::vector<std::tuple<int, std::string, float, int>> processes = {
@@ -85,7 +87,7 @@ int main(int, char**)
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    // Main loop
+    // main loop
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
@@ -148,7 +150,7 @@ int main(int, char**)
             ImGui::SetNextWindowPos(ImVec2(main_viewport->WorkPos.x + main_viewport->WorkSize.x * 0.5f - 260, main_viewport->WorkPos.y + 60), ImGuiCond_Appearing);
             if (ImGui::Begin("App A", &show_1))
             {
-                ImGui::Text("Hello There!");
+                ImGui::Text("Pick a Color!");
                 ImGui::ColorEdit3("##colorpicker", (float*)&colors); //placeholder
             }
             ImGui::End();
@@ -161,8 +163,18 @@ int main(int, char**)
             ImGui::SetNextWindowPos(ImVec2(main_viewport->WorkPos.x + 80, main_viewport->WorkPos.y + 80), ImGuiCond_Appearing);
             if (ImGui::Begin("App B", &show_2))
             {
-                ImGui::Text("Hi!!");
-                // add stuff
+                ImGui::Text("Write a message!");
+                ImGui::InputText("##textinput", text, sizeof(text));
+
+                ImGui::SameLine();
+                if (ImGui::Button("Send")) {
+                    show_message = true;
+                    std::memcpy(display, text, sizeof(text));
+                }
+            }
+
+            if (show_message) {
+                ImGui::Text(display);
             }
             ImGui::End();
         }
@@ -225,9 +237,6 @@ int main(int, char**)
 
         glfwSwapBuffers(window);
     }
-#ifdef __EMSCRIPTEN__
-    EMSCRIPTEN_MAINLOOP_END;
-#endif
 
     // Cleanup
     ImGui_ImplOpenGL3_Shutdown();
