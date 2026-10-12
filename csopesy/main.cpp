@@ -119,7 +119,7 @@ int main(int, char**)
             top_color,     // Top right
             bottom_color,  // Bottom right
             bottom_color   // Bottom left
-
+        );
         
 
         // Taskbar
@@ -133,7 +133,7 @@ int main(int, char**)
             ImGui::SameLine();
             if (ImGui::Button("App B", ImVec2(90, 34))) { show_2 = !show_2; }
             ImGui::SameLine();
-            if (ImGui::Button("Task Manager", ImVec2(90, 34))) { show_task_manager = !show_task_manager; }
+            if (ImGui::Button("Task Manager", ImVec2(200, 34))) { show_task_manager = !show_task_manager; }
 
             // Get time using <ctime> 
             time_t rawtime;
@@ -149,15 +149,28 @@ int main(int, char**)
             char time_buffer[32];
             std::strftime(time_buffer, sizeof(time_buffer), "%I:%M:%S %p", &timeinfo);
 
-            // show time on the right 
-            ImGui::SameLine(ImGui::GetWindowContentRegionMax().x - 180.0f);
-            ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 8.0f);
-            ImGui::Text("%s", time_buffer);
+            float power_width = 80.0f;
+            float right_padding = 10.0f;
 
-            ImGui::SameLine(ImGui::GetWindowContentRegionMax().x - 80.0f);
-            if (ImGui::Button("Power", ImVec2(80, 34)))
+            // show time on the right 
+            ImGui::SameLine(ImGui::GetWindowContentRegionMax().x - power_width - right_padding);
+            if (ImGui::Button("Power", ImVec2(power_width, 34)))
                 glfwSetWindowShouldClose(window, GLFW_TRUE);
 
+            float time_width = ImGui::CalcTextSize(time_buffer).x;
+            float spacing = 15.0f;
+
+            ImGui::SameLine(
+                ImGui::GetWindowContentRegionMax().x
+                - power_width
+                - right_padding
+                - time_width
+                - spacing
+            );
+
+            ImGui::SetCursorPosY((ImGui::GetWindowHeight() - ImGui::GetFrameHeight()) * 0.5f);
+            ImGui::Text("%s", time_buffer);
+            
             ImGui::End();
             ImGui::PopStyleVar();
         }
