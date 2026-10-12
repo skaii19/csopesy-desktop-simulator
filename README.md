@@ -4,6 +4,9 @@
 - Ong, Eiress Bassey H.
 - Xu, Kai Wen H.
 
+# Entry Class File
+csopesy\main.cpp
+
 # How to Run:
 ## 1. DOWNLOAD THE REQUIRED LIBRARIES
 
